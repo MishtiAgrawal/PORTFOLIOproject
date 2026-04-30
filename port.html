@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mishti Agrawal — B.Tech CSE Student & Aspiring Developer</title>
+  <meta name="description" content="Mishti Agrawal — B.Tech Computer Science student at LNCT Excellence, Bhopal. Passionate about programming, Generative AI, and cybersecurity." />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Playfair Display', 'serif'],
+            script: ['Pacifico', 'cursive'],
+          },
+          colors: {
+            cream: '#fdf6f3',
+            blush: '#f7efec',
+            rose: {
+              50:  '#fff5f3',
+              100: '#ffe5df',
+              200: '#fcd0c6',
+              300: '#f6a89a',
+              400: '#ee8576',
+              500: '#e26b5c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="rep.css" />
+</head>
+
+<body class="bg-cream text-gray-700 antialiased overflow-x-hidden">
+
+  <!-- ===== PAGE LOADER ===== -->
+  <div id="loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-cream dark:bg-[#1a1517]">
+    <div class="text-center">
+      <div class="loader-circle"></div>
+      <p class="mt-6 text-rose-400 font-script text-2xl">Mishti</p>
+    </div>
+  </div>
+
+  <!-- ===== CUSTOM CURSOR ===== -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ===== SCROLL PROGRESS BAR ===== -->
+  <div id="scroll-progress"></div>
+
+  <!-- ===== FLOATING BLOBS ===== -->
+  <div class="blobs-wrap" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
+      <a href="#home" class="text-2xl font-script text-rose-400">Mishti</a>
+
+      <ul class="hidden md:flex gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#experience" class="nav-link">Experience</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" aria-label="Toggle theme"
+          class="w-10 h-10 rounded-full bg-white/70 dark:bg-white/10 backdrop-blur border border-rose-100 dark:border-white/10 flex items-center justify-center hover:scale-110 transition">
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 text-rose-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="#contact" class="hidden sm:inline-flex bg-rose-300 hover:bg-rose-400 text-white px-5 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-rose-200/60 transition transform hover:-translate-y-0.5">
+          Let's Connect ✨
+        </a>
+        <button id="menu-btn" class="md:hidden w-10 h-10 rounded-full bg-white/70 dark:bg-white/10 border border-rose-100 dark:border-white/10 flex items-center justify-center" aria-label="Open menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white/95 dark:bg-[#1a1517]/95 backdrop-blur-lg border-t border-rose-100 dark:border-white/10">
+      <ul class="flex flex-col p-6 gap-4 text-gray-700 dark:text-gray-200 font-medium">
+        <li><a href="#home" class="block py-2">Home</a></li>
+        <li><a href="#about" class="block py-2">About</a></li>
+        <li><a href="#skills" class="block py-2">Skills</a></li>
+        <li><a href="#projects" class="block py-2">Projects</a></li>
+        <li><a href="#experience" class="block py-2">Experience</a></li>
+        <li><a href="#contact" class="block py-2">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="relative pt-32 md:pt-36 pb-20 px-6 md:px-10">
+    <div class="max-w-7xl mx-auto rounded-[2.5rem] bg-[#fdf6f3] dark:bg-white/5 shadow-2xl shadow-rose-100/40 dark:shadow-black/30 border border-white dark:border-white/10 p-8 md:p-14">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+
+        <!-- LEFT TEXT -->
+        <div data-reveal>
+          <p class="bg-rose-100 dark:bg-rose-300/10 inline-block px-4 py-1.5 rounded-full text-sm text-gray-600 dark:text-gray-300 mb-5">
+            Hello! I'm 👋
+          </p>
+
+          <h1 class="text-5xl md:text-7xl font-bold text-rose-400 leading-tight font-display">
+            Mishti Agrawal
+          </h1>
+
+          <h2 class="text-4xl md:text-5xl text-rose-300 mt-2 mb-5 font-script">
+            <span id="typed"></span><span class="typed-cursor">|</span>
+          </h2>
+
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-3">
+            B.Tech <span class="text-rose-400 font-semibold">CSE Student ❤</span>
+          </p>
+
+          <p class="text-gray-500 dark:text-gray-400 max-w-md mb-8 leading-relaxed">
+            Motivated Computer Science student at LNCT Excellence, Bhopal — exploring software development, Generative AI, and cybersecurity, one line of code at a time.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a href="#projects" class="gradient-btn group">
+              <span>View My Work</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#contact" class="ghost-btn">
+              <span>Get in touch</span>
+            </a>
+          </div>
+
+          <div class="mt-10 flex items-center gap-5 text-rose-300">
+            <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12.02c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.67.8.56C20.71 21.4 24 17.1 24 12.02 24 5.65 18.85.5 12 .5z"/></svg></a>
+              <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.36-1.84c3.59 0 4.26 2.36 4.26 5.43v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"/></svg></a>
+              <a href="mailto:mishtiagrawal2005@gmail.com" aria-label="Email" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+              <a href="tel:+919472818603" aria-label="Phone" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+          </div>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="relative" data-reveal data-reveal-delay="0.2">
+          <div class="hero-image-wrap">
+            <div class="hero-image-bg"></div>
+            <img src="ChatGPT Image Apr 27, 2026, 06_03_55 PM.png" alt="Mishti Agrawal portrait" class="hero-image" />
+            <div class="sparkle sparkle-1">✨</div>
+            <div class="sparkle sparkle-2">💖</div>
+            <div class="sparkle sparkle-3">🌸</div>
+          </div>
+
+          <!-- FLOATING CARD -->
+          <div class="absolute -bottom-6 -left-2 md:left-8 bg-white dark:bg-white/10 backdrop-blur p-4 rounded-2xl shadow-xl shadow-rose-200/40 dark:shadow-black/30 flex gap-3 items-center max-w-xs floating-card">
+            <div class="bg-rose-400 text-white p-3 rounded-full text-sm font-mono">&lt;/&gt;</div>
+            <div>
+              <h4 class="font-semibold text-gray-700 dark:text-gray-100 text-sm">CSE Student @ LNCT</h4>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Curious about code, GenAI &amp; security.</p>
+            </div>
+          </div>
+
+          <div class="absolute -top-3 -right-2 md:-right-4 bg-white dark:bg-white/10 backdrop-blur px-4 py-3 rounded-2xl shadow-xl shadow-rose-200/40 floating-card-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              <span class="text-xs text-gray-600 dark:text-gray-300 font-medium">Open to internships</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS STRIP -->
+      <div class="mt-16 bg-[#f8f1ee] dark:bg-white/5 p-8 rounded-3xl grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div data-reveal>
+          <p class="text-3xl md:text-4xl font-bold text-rose-400 stat-num" data-target="9.14" data-decimals="2">0</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Current CGPA</p>
+        </div>
+        <div data-reveal data-reveal-delay="0.1">
+          <p class="text-3xl md:text-4xl font-bold text-rose-400 stat-num" data-target="93.2" data-decimals="1" data-suffix="%">0</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Class XII (CBSE)</p>
+        </div>
+        <div data-reveal data-reveal-delay="0.2">
+          <p class="text-3xl md:text-4xl font-bold text-rose-400 stat-num" data-target="2" data-suffix="nd">0</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">IEEE Research Conclave</p>
+        </div>
+        <div data-reveal data-reveal-delay="0.3">
+          <p class="text-3xl md:text-4xl font-bold text-rose-400 stat-num" data-target="2" data-suffix="+">0</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Certifications earned</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-24 px-6 md:px-10 relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14" data-reveal>
+        <span class="section-eyebrow">About me</span>
+        <h2 class="section-title">A little about my story</h2>
+      </div>
+
+      <div class="grid md:grid-cols-5 gap-12 items-center">
+        <div class="md:col-span-2 relative" data-reveal>
+          <div class="about-image-wrap">
+            <img src="ChatGPT Image Apr 27, 2026, 06_03_55 PM.png" alt="About Mishti Agrawal" class="rounded-3xl object-cover w-full h-full" />
+            <div class="absolute -bottom-5 -right-5 bg-white dark:bg-white/10 backdrop-blur px-5 py-3 rounded-2xl shadow-lg flex items-center gap-2">
+              <span class="font-script text-rose-400 text-xl">9.14</span>
+              <span class="text-xs text-gray-500 dark:text-gray-300">current<br/>CGPA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-3" data-reveal data-reveal-delay="0.15">
+          <h3 class="text-2xl md:text-3xl font-display font-semibold text-gray-800 dark:text-gray-100 mb-4">
+            Hi, I'm Mishti — a Computer Science student who loves turning curiosity into code.
+          </h3>
+          <p class="text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+            I'm pursuing my B.Tech in Computer Science and Engineering at LNCT Excellence, Bhopal (RGPV), with a current CGPA of 9.14. My interests sit at the intersection of programming, Generative AI, and cybersecurity — three fields where I love to learn, experiment, and build.
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
+            Outside class, I enjoy practicing data structures in Java and C++, designing clean web pages, and exploring how AI is reshaping everyday tools. I'm always looking for opportunities to grow and contribute to meaningful tech.
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-8">
+            <div class="info-pill"><span>📍</span><span><b class="text-gray-700 dark:text-gray-100">Based in</b><br/>Bhopal, Madhya Pradesh</span></div>
+            <div class="info-pill"><span>🎓</span><span><b class="text-gray-700 dark:text-gray-100">Education</b><br/>B.Tech CSE · LNCT Excellence</span></div>
+            <div class="info-pill"><span>💼</span><span><b class="text-gray-700 dark:text-gray-100">Status</b><br/>Open to internships</span></div>
+            <div class="info-pill"><span>🗣️</span><span><b class="text-gray-700 dark:text-gray-100">Languages</b><br/>English, Hindi</span></div>
+          </div>
+
+          <a href="mailto:mishtiagrawal2005@gmail.com" class="gradient-btn">
+            <span>Reach out</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="py-24 px-6 md:px-10 relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-reveal>
+        <span class="section-eyebrow">My toolkit</span>
+        <h2 class="section-title">Skills &amp; subjects</h2>
+        <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto mt-3">Tap on any skill to peek at where I'm at right now and what I'm actively learning.</p>
+      </div>
+
+      <div id="skills-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="py-24 px-6 md:px-10 relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14" data-reveal>
+        <div>
+          <span class="section-eyebrow">My work</span>
+          <h2 class="section-title">Projects &amp; experiments</h2>
+        </div>
+        <div class="flex flex-wrap gap-2" id="project-filters">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="web">Web</button>
+          <button class="filter-chip" data-filter="ai">AI / Security</button>
+          <button class="filter-chip" data-filter="research">Research</button>
+        </div>
+      </div>
+
+      <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE / EDUCATION ===== -->
+  <section id="experience" class="py-24 px-6 md:px-10 relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16" data-reveal>
+        <span class="section-eyebrow">Journey</span>
+        <h2 class="section-title">Experience &amp; education</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12">
+        <div data-reveal>
+          <h3 class="text-xl font-display font-semibold text-gray-800 dark:text-gray-100 mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-300/10 flex items-center justify-center text-rose-400">💼</span>
+            Experience &amp; achievements
+          </h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">Internship</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">Tata Quality Internship</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Generative AI &amp; Cybersecurity</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Built foundational understanding of Generative AI concepts and applications, studied cybersecurity fundamentals, and explored ethical considerations in real-world AI systems.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">Achievement</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">2nd Position — IEEE Research Conclave</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">IEEE</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Secured the 2nd position in the IEEE Research Conclave for collaborative research-based work.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">Certifications</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">Generative AI &amp; Cybersecurity Awareness</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Certified · 2024 – 2025</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Completed certifications in Generative AI fundamentals and Cybersecurity Awareness — covering risk awareness, data protection, and ethical AI use.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">Ongoing</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">Front-End Web Development</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Self-driven projects</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Building responsive static web pages with structured layouts, clean UI, and Git-based version control on GitHub.</p>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-delay="0.1">
+          <h3 class="text-xl font-display font-semibold text-gray-800 dark:text-gray-100 mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-300/10 flex items-center justify-center text-rose-400">🎓</span>
+            Education
+          </h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">2024 – 2028</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">B.Tech, Computer Science &amp; Engineering</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">LNCT Excellence, Bhopal · RGPV</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Currently pursuing with a CGPA of <b class="text-rose-400">9.14</b>. Coursework spans OOP, DSA, DBMS, Computer Networks, and Software Engineering.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">2024</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">Class XII — CBSE</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Gurukul Public School, Chapra, Bihar</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Graduated with <b class="text-rose-400">93.2%</b> in the Science stream.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <span class="text-xs text-rose-400 font-medium">2022</span>
+              <h4 class="font-semibold text-gray-800 dark:text-gray-100 mt-1">Class X</h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Saraswati Shishu Vidya Mandir, Chapra, Bihar</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Completed with <b class="text-rose-400">91.4%</b>, building strong foundations in math and science.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="py-24 px-6 md:px-10 relative">
+    <div class="max-w-6xl mx-auto bg-[#fdf6f3] dark:bg-white/5 rounded-[2.5rem] shadow-2xl shadow-rose-100/40 border border-white dark:border-white/10 p-8 md:p-14 relative overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-72 h-72 bg-rose-200/40 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-rose-100/60 rounded-full blur-3xl"></div>
+
+      <div class="relative grid md:grid-cols-2 gap-12 items-start">
+        <div data-reveal>
+          <span class="section-eyebrow">Say hi</span>
+          <h2 class="section-title">Let's connect and build something together.</h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-4 leading-relaxed">
+            Whether it's an internship, a collaboration, or a friendly hello — my inbox is always open. I'd love to hear from you.
+          </p>
+
+          <div class="mt-8 space-y-4">
+            <a href="mailto:mishtiagrawal2005@gmail.com" class="contact-pill block">
+              <span class="contact-icon">✉️</span>
+              <div>
+                <p class="text-xs text-gray-400">Email</p>
+                <p class="font-medium text-gray-700 dark:text-gray-100">mishtiagrawal2005@gmail.com</p>
+              </div>
+            </a>
+            <a href="tel:+919472818603" class="contact-pill block">
+              <span class="contact-icon">📞</span>
+              <div>
+                <p class="text-xs text-gray-400">Phone</p>
+                <p class="font-medium text-gray-700 dark:text-gray-100">+91 94728 18603</p>
+              </div>
+            </a>
+            <div class="contact-pill">
+              <span class="contact-icon">📍</span>
+              <div>
+                <p class="text-xs text-gray-400">Location</p>
+                <p class="font-medium text-gray-700 dark:text-gray-100">Bhopal, Madhya Pradesh, India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="contact-form" class="bg-white/80 dark:bg-white/5 backdrop-blur rounded-3xl p-8 shadow-xl shadow-rose-100/40 border border-white dark:border-white/10 space-y-5" data-reveal data-reveal-delay="0.15">
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1 block">Your name</label>
+            <input required type="text" placeholder="Jane Doe" class="form-input" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1 block">Email</label>
+            <input required type="email" placeholder="jane@studio.com" class="form-input" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1 block">Subject</label>
+            <input type="text" placeholder="Internship, collab, just hi…" class="form-input" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1 block">Message</label>
+            <textarea required rows="4" placeholder="Tell me a little about it…" class="form-input resize-none"></textarea>
+          </div>
+          <button type="submit" class="gradient-btn w-full justify-center">
+            <span>Send message</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+          <p id="form-status" class="text-sm text-rose-400 text-center hidden">Thanks! Your message has been sent ✨</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="px-6 md:px-10 pb-10">
+    <div class="max-w-7xl mx-auto border-t border-rose-100 dark:border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
+      <p>© <span id="year"></span> Mishti Agrawal. Crafted with 💖 and a little caffeine.</p>
+      <div class="flex gap-5">
+        <a href="https://github.com/" target="_blank" rel="noopener" class="hover:text-rose-400 transition">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener" class="hover:text-rose-400 transition">LinkedIn</a>
+        <a href="mailto:mishtiagrawal2005@gmail.com" class="hover:text-rose-400 transition">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCROLL-TO-TOP ===== -->
+  <button id="to-top" aria-label="Scroll to top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-rose-400 text-white shadow-lg shadow-rose-300/50 flex items-center justify-center opacity-0 pointer-events-none transition-all hover:scale-110 z-40">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <!-- ===== SKILL DETAIL MODAL ===== -->
+  <div id="skill-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+    <div class="bg-white dark:bg-[#241c1f] rounded-3xl max-w-md w-full p-8 shadow-2xl modal-card relative">
+      <button id="close-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full hover:bg-rose-50 dark:hover:bg-white/10 flex items-center justify-center text-gray-500" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div id="modal-icon" class="w-16 h-16 rounded-2xl bg-rose-100 dark:bg-rose-300/10 flex items-center justify-center text-3xl mb-4"></div>
+      <h3 id="modal-title" class="text-2xl font-display font-semibold text-gray-800 dark:text-gray-100 mb-1"></h3>
+      <p id="modal-level" class="text-sm text-rose-400 font-medium mb-4"></p>
+      <div class="bg-rose-50 dark:bg-white/5 rounded-full h-3 overflow-hidden mb-4">
+        <div id="modal-bar" class="h-full bg-gradient-to-r from-rose-300 to-rose-400 rounded-full" style="width:0%"></div>
+      </div>
+      <p id="modal-desc" class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed"></p>
+      <div id="modal-tags" class="mt-5 flex flex-wrap gap-2"></div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
